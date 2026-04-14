@@ -99,7 +99,7 @@
   <div id="ranks"></div>
 </div>
 
-<p class="hint">Hours = time spent per week &nbsp;·&nbsp; Drag = how much it slows your decisions<br>Score = Hours × Drag (max 25)</p>
+<p class="hint">Hours = time spent per week &nbsp;·&nbsp; Cognitive load = how mentally draining each instance is<br>Score = Hours × Cognitive load (max 25)</p>
 
 <script>
 var items = [
@@ -128,7 +128,7 @@ items.forEach(function(item) {
         '<div class="axis-labels"><span>Low</span><span>High</span></div>' +
       '</div>' +
       '<div class="slider-group">' +
-        '<div class="slider-label">Decision drag</div>' +
+        '<div class="slider-label">Cognitive load</div>' +
         '<div class="slider-row">' +
           '<input type="range" min="1" max="5" step="1" value="' + item.drag + '" id="d-' + item.id + '">' +
           '<span class="slider-val" id="dv-' + item.id + '">' + item.drag + '</span>' +
@@ -173,4 +173,4 @@ function update() {
 update();
 </script>
 </body>
-</html>        
+</html>
