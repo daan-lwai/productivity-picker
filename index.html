@@ -11,15 +11,12 @@
   .gedrt .done { color: #66C61C; font-weight: 700; }
   .gedrt .active { color: #222; font-weight: 700; }
 
-  .layout { display: flex; gap: 24px; align-items: start; }
-  .sliders-col {
-    flex: 0 0 46%; min-width: 0;
-    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
-  }
-  .grid-col { flex: 1; min-width: 0; }
+  .layout { display: flex; gap: 28px; align-items: start; }
+  .sliders-col { flex: 0 0 300px; }
+  .grid-col { flex: 1; min-width: 0; display: flex; justify-content: center; }
 
   .row {
-    padding: 12px 14px;
+    margin-bottom: 10px; padding: 12px 14px;
     background: #F7F7F7; border: 1px solid #E5E5E5; border-radius: 8px;
   }
   .row-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
@@ -53,7 +50,7 @@
   .axis-labels { display: flex; justify-content: space-between; margin-top: 1px; }
   .axis-labels span { font-size: 9px; color: #bbb; }
 
-  .grid-outer { position: relative; padding-left: 40px; padding-bottom: 32px; }
+  .grid-outer { position: relative; padding-left: 40px; padding-bottom: 32px; width: 100%; max-width: 440px; }
   .grid-box {
     position: relative; width: 100%; padding-bottom: 100%;
     border: 2px solid #222; border-radius: 4px; overflow: hidden;
@@ -101,11 +98,9 @@
 
   @media (max-width: 700px) {
     .layout { flex-direction: column; }
-    .sliders-col { grid-template-columns: 1fr 1fr; }
-    .grid-col { flex: none; width: 100%; max-width: 400px; margin: 0 auto; }
-  }
-  @media (max-width: 400px) {
-    .sliders-col { grid-template-columns: 1fr; }
+    .sliders-col { flex: none; width: 100%; }
+    .grid-col { width: 100%; }
+    .grid-outer { max-width: 360px; margin: 0 auto; }
   }
 </style>
 </head>
