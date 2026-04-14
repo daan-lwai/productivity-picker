@@ -8,6 +8,54 @@
   body { font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #222222; background: #FFFFFF; padding: 24px 20px; }
   .title { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
   .subtitle { font-size: 14px; color: #666; margin-bottom: 24px; line-height: 1.5; }
+  .gedrt .done { color: #66C61C; font-weight: 700; }
+  .gedrt .active { color: #222; font-weight: 700; }
+
+  .grid-wrap { position: relative; max-width: 480px; margin: 0 auto 28px; }
+  .grid-box {
+    position: relative; width: 100%; padding-bottom: 100%;
+    border: 2px solid #222; border-radius: 4px; overflow: hidden;
+  }
+  .grid-inner { position: absolute; inset: 0; }
+  .grid-q {
+    position: absolute; width: 50%; height: 50%;
+    display: flex; align-items: flex-start; justify-content: flex-start;
+    padding: 12px; font-size: 11px; color: #999;
+  }
+  .grid-q.tl { top: 0; left: 0; background: #F7F7F7; }
+  .grid-q.tr { top: 0; left: 50%; background: #EAFBE4; }
+  .grid-q.bl { top: 50%; left: 0; background: #FDFDFD; }
+  .grid-q.br { top: 50%; left: 50%; background: #F7F7F7; }
+  .grid-q .q-label { font-weight: 600; font-size: 12px; }
+  .grid-q.tr .q-label { color: #3D7A1C; }
+  .grid-q.tl .q-label, .grid-q.br .q-label { color: #888; }
+  .grid-q.bl .q-label { color: #bbb; }
+  .grid-line-h { position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: #ddd; }
+  .grid-line-v { position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: #ddd; }
+  .grid-dot {
+    position: absolute; width: 40px; height: 40px; border-radius: 50%;
+    background: #66C61C; color: #fff; font-weight: 700; font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+    transform: translate(-50%, -50%);
+    transition: left 0.35s ease, top 0.35s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    z-index: 2;
+  }
+  .grid-axis-label {
+    font-size: 11px; color: #888; text-align: center;
+  }
+  .grid-axis-x { display: flex; justify-content: space-between; margin-top: 6px; }
+  .grid-axis-x .center { flex: 1; text-align: center; font-weight: 600; color: #222; font-size: 12px; }
+  .grid-axis-y {
+    position: absolute; left: -54px; top: 0; bottom: 0;
+    display: flex; flex-direction: column; justify-content: space-between;
+    align-items: center; padding: 2px 0;
+  }
+  .grid-axis-y .center {
+    font-weight: 600; color: #222; font-size: 12px;
+    writing-mode: vertical-lr; transform: rotate(180deg);
+  }
+
   .row {
     display: flex; align-items: center; gap: 12px;
     margin-bottom: 16px; padding: 14px 16px;
@@ -73,13 +121,11 @@
     margin-top: 16px; font-size: 12px; color: #999;
     line-height: 1.5; text-align: center;
   }
-  .gedrt { display: inline-block; font-weight: 700; }
-  .gedrt .done { color: #66C61C; }
-  .gedrt .active { color: #222; }
   @media (max-width: 560px) {
     .sliders { flex-direction: column; gap: 8px; }
     .row { flex-wrap: wrap; }
     .name { min-width: 60px; }
+    .grid-wrap { margin-left: 54px; margin-right: 0; }
   }
 </style>
 </head>
@@ -88,6 +134,33 @@
 <div class="title">Which assistant should you build first?</div>
 <p class="subtitle">All four pass <span class="gedrt"><span class="done">G</span> <span class="done">E</span> <span class="done">D</span></span> — now score them on <span class="gedrt"><span class="active">R</span></span> and <span class="gedrt"><span class="active">T</span></span>.</p>
 
+<div class="grid-wrap">
+  <div class="grid-axis-y">
+    <span class="grid-axis-label">Toil</span>
+    <span class="grid-axis-y center">T — Toil</span>
+    <span class="grid-axis-label">Joyful</span>
+  </div>
+  <div class="grid-box">
+    <div class="grid-inner">
+      <div class="grid-q tl"><span class="q-label">Worth the relief</span></div>
+      <div class="grid-q tr"><span class="q-label">Start here</span></div>
+      <div class="grid-q bl"><span class="q-label">Lower priority</span></div>
+      <div class="grid-q br"><span class="q-label">Volume play</span></div>
+      <div class="grid-line-h"></div>
+      <div class="grid-line-v"></div>
+      <div class="grid-dot" id="dot-email">E</div>
+      <div class="grid-dot" id="dot-writing">W</div>
+      <div class="grid-dot" id="dot-data">D</div>
+      <div class="grid-dot" id="dot-meeting">M</div>
+    </div>
+  </div>
+  <div class="grid-axis-x">
+    <span class="grid-axis-label">Not time-consuming</span>
+    <span class="center">R — Recurring</span>
+    <span class="grid-axis-label">Highly</span>
+  </div>
+</div>
+
 <div id="rows"></div>
 
 <div class="rank-section">
@@ -95,14 +168,14 @@
   <div id="ranks"></div>
 </div>
 
-<p class="hint">R = how recurring / time-consuming &nbsp;·&nbsp; T = how much it feels like toil<br>Score = R × T (max 25). Start with the highest.</p>
+<p class="hint">Score = R × T (max 25). Start with the highest.</p>
 
 <script>
 var items = [
-  { id:'email',   name:'Email',    icon:'E', hours:3, load:3 },
-  { id:'writing', name:'Writing',  icon:'W', hours:3, load:3 },
-  { id:'data',    name:'Data',     icon:'D', hours:3, load:3 },
-  { id:'meeting', name:'Meetings', icon:'M', hours:3, load:3 }
+  { id:'email',   name:'Email',    icon:'E', r:3, t:3 },
+  { id:'writing', name:'Writing',  icon:'W', r:3, t:3 },
+  { id:'data',    name:'Data',     icon:'D', r:3, t:3 },
+  { id:'meeting', name:'Meetings', icon:'M', r:3, t:3 }
 ];
 
 var rowsEl = document.getElementById('rows');
@@ -118,44 +191,49 @@ items.forEach(function(item) {
       '<div class="slider-group">' +
         '<div class="slider-label">R — Recurring</div>' +
         '<div class="slider-row">' +
-          '<input type="range" min="1" max="5" step="1" value="' + item.hours + '" id="h-' + item.id + '">' +
-          '<span class="slider-val" id="hv-' + item.id + '">' + item.hours + '</span>' +
+          '<input type="range" min="1" max="5" step="1" value="' + item.r + '" id="r-' + item.id + '">' +
+          '<span class="slider-val" id="rv-' + item.id + '">' + item.r + '</span>' +
         '</div>' +
         '<div class="axis-labels"><span>Not time-consuming</span><span>Highly</span></div>' +
       '</div>' +
       '<div class="slider-group">' +
         '<div class="slider-label">T — Toil</div>' +
         '<div class="slider-row">' +
-          '<input type="range" min="1" max="5" step="1" value="' + item.load + '" id="d-' + item.id + '">' +
-          '<span class="slider-val" id="dv-' + item.id + '">' + item.load + '</span>' +
+          '<input type="range" min="1" max="5" step="1" value="' + item.t + '" id="t-' + item.id + '">' +
+          '<span class="slider-val" id="tv-' + item.id + '">' + item.t + '</span>' +
         '</div>' +
         '<div class="axis-labels"><span>Joyful work</span><span>Toil</span></div>' +
       '</div>' +
     '</div>' +
-    '<div class="score" id="s-' + item.id + '">' + (item.hours * item.load) + '</div>';
+    '<div class="score" id="s-' + item.id + '">' + (item.r * item.t) + '</div>';
   rowsEl.appendChild(row);
 
-  document.getElementById('h-' + item.id).addEventListener('input', function(e) {
-    item.hours = +e.target.value;
-    document.getElementById('hv-' + item.id).textContent = item.hours;
+  document.getElementById('r-' + item.id).addEventListener('input', function(e) {
+    item.r = +e.target.value;
+    document.getElementById('rv-' + item.id).textContent = item.r;
     update();
   });
-  document.getElementById('d-' + item.id).addEventListener('input', function(e) {
-    item.load = +e.target.value;
-    document.getElementById('dv-' + item.id).textContent = item.load;
+  document.getElementById('t-' + item.id).addEventListener('input', function(e) {
+    item.t = +e.target.value;
+    document.getElementById('tv-' + item.id).textContent = item.t;
     update();
   });
 });
 
 function update() {
   items.forEach(function(it) {
-    document.getElementById('s-' + it.id).textContent = it.hours * it.load;
+    document.getElementById('s-' + it.id).textContent = it.r * it.t;
+    var dot = document.getElementById('dot-' + it.id);
+    var xPct = ((it.r - 1) / 4) * 80 + 10;
+    var yPct = 100 - (((it.t - 1) / 4) * 80 + 10);
+    dot.style.left = xPct + '%';
+    dot.style.top = yPct + '%';
   });
   var sorted = items.slice().sort(function(a, b) {
-    return (b.hours * b.load) - (a.hours * a.load);
+    return (b.r * b.t) - (a.r * a.t);
   });
   ranksEl.innerHTML = sorted.map(function(it, i) {
-    var sc = it.hours * it.load;
+    var sc = it.r * it.t;
     var pct = Math.round((sc / 25) * 100);
     return '<div class="rank-bar-wrap">' +
       '<span class="rank-num">' + (i + 1) + '.</span>' +
