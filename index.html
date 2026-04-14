@@ -5,23 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #1a1a1a; background: #fff; padding: 24px 20px; }
+  body { font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #222222; background: #FFFFFF; padding: 24px 20px; }
   .title { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
   .subtitle { font-size: 14px; color: #666; margin-bottom: 24px; line-height: 1.5; }
   .row {
     display: flex; align-items: center; gap: 12px;
     margin-bottom: 16px; padding: 14px 16px;
-    background: #f8f8f6; border-radius: 10px;
+    background: #F7F7F7; border: 1px solid #E5E5E5; border-radius: 10px;
   }
   .icon {
     width: 36px; height: 36px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     font-weight: 600; font-size: 14px; flex-shrink: 0;
+    background: #EAFBE4; color: #3D7A1C;
   }
-  .icon-email    { background: #E6F1FB; color: #185FA5; }
-  .icon-writing  { background: #EEEDFE; color: #534AB7; }
-  .icon-data     { background: #E1F5EE; color: #0F6E56; }
-  .icon-meeting  { background: #FAEEDA; color: #854F0B; }
   .name { font-size: 14px; font-weight: 600; min-width: 76px; }
   .sliders { flex: 1; display: flex; gap: 16px; }
   .slider-group { flex: 1; }
@@ -30,29 +27,29 @@
   .slider-row input[type=range] {
     -webkit-appearance: none; appearance: none;
     flex: 1; height: 6px; border-radius: 3px;
-    background: #ddd; outline: none; cursor: pointer;
+    background: #E5E5E5; outline: none; cursor: pointer;
   }
   .slider-row input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none; appearance: none;
     width: 20px; height: 20px; border-radius: 50%;
-    background: #5BBB47; border: 2px solid #fff;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.2); cursor: pointer;
+    background: #66C61C; border: 2px solid #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15); cursor: pointer;
   }
   .slider-row input[type=range]::-moz-range-thumb {
     width: 20px; height: 20px; border-radius: 50%;
-    background: #5BBB47; border: 2px solid #fff;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.2); cursor: pointer;
+    background: #66C61C; border: 2px solid #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15); cursor: pointer;
   }
   .slider-val { font-size: 13px; font-weight: 600; min-width: 14px; text-align: center; }
   .axis-labels { display: flex; justify-content: space-between; margin-top: 2px; }
   .axis-labels span { font-size: 10px; color: #aaa; }
   .score {
     font-size: 20px; font-weight: 700; min-width: 36px; text-align: center;
-    color: #5BBB47;
+    color: #66C61C;
   }
   .rank-section {
     margin-top: 24px; padding: 20px;
-    border: 1px solid #e8e8e4; border-radius: 10px;
+    border: 1px solid #E5E5E5; border-radius: 10px;
   }
   .rank-title { font-size: 15px; font-weight: 600; margin-bottom: 14px; }
   .rank-bar-wrap {
@@ -63,23 +60,19 @@
   .rank-name { font-size: 13px; font-weight: 600; min-width: 76px; }
   .rank-bar-bg {
     flex: 1; height: 22px;
-    background: #f2f2f0; border-radius: 11px;
+    background: #F2F2F2; border-radius: 11px;
     overflow: hidden;
   }
   .rank-bar {
     height: 100%; border-radius: 11px;
     transition: width 0.3s ease;
+    background: #85E13A;
   }
   .rank-score { font-size: 14px; font-weight: 700; min-width: 28px; text-align: right; }
-  .bar-email   { background: #85B7EB; }
-  .bar-writing { background: #AFA9EC; }
-  .bar-data    { background: #5DCAA5; }
-  .bar-meeting { background: #FAC775; }
   .hint {
     margin-top: 16px; font-size: 12px; color: #999;
     line-height: 1.5; text-align: center;
   }
-
   @media (max-width: 560px) {
     .sliders { flex-direction: column; gap: 8px; }
     .row { flex-wrap: wrap; }
@@ -103,10 +96,10 @@
 
 <script>
 var items = [
-  { id:'email',   name:'Email',    icon:'E', iconClass:'icon-email',   barClass:'bar-email',   hours:3, drag:3 },
-  { id:'writing', name:'Writing',  icon:'W', iconClass:'icon-writing', barClass:'bar-writing', hours:3, drag:3 },
-  { id:'data',    name:'Data',     icon:'D', iconClass:'icon-data',    barClass:'bar-data',    hours:3, drag:3 },
-  { id:'meeting', name:'Meetings', icon:'M', iconClass:'icon-meeting', barClass:'bar-meeting', hours:3, drag:3 }
+  { id:'email',   name:'Email',    icon:'E', iconClass:'icon-email',   barClass:'bar-email',   hours:3, load:3 },
+  { id:'writing', name:'Writing',  icon:'W', iconClass:'icon-writing', barClass:'bar-writing', hours:3, load:3 },
+  { id:'data',    name:'Data',     icon:'D', iconClass:'icon-data',    barClass:'bar-data',    hours:3, load:3 },
+  { id:'meeting', name:'Meetings', icon:'M', iconClass:'icon-meeting', barClass:'bar-meeting', hours:3, load:3 }
 ];
 
 var rowsEl = document.getElementById('rows');
@@ -130,13 +123,13 @@ items.forEach(function(item) {
       '<div class="slider-group">' +
         '<div class="slider-label">Cognitive load</div>' +
         '<div class="slider-row">' +
-          '<input type="range" min="1" max="5" step="1" value="' + item.drag + '" id="d-' + item.id + '">' +
-          '<span class="slider-val" id="dv-' + item.id + '">' + item.drag + '</span>' +
+          '<input type="range" min="1" max="5" step="1" value="' + item.load + '" id="d-' + item.id + '">' +
+          '<span class="slider-val" id="dv-' + item.id + '">' + item.load + '</span>' +
         '</div>' +
         '<div class="axis-labels"><span>Low</span><span>High</span></div>' +
       '</div>' +
     '</div>' +
-    '<div class="score" id="s-' + item.id + '">' + (item.hours * item.drag) + '</div>';
+    '<div class="score" id="s-' + item.id + '">' + (item.hours * item.load) + '</div>';
   rowsEl.appendChild(row);
 
   document.getElementById('h-' + item.id).addEventListener('input', function(e) {
@@ -145,21 +138,21 @@ items.forEach(function(item) {
     update();
   });
   document.getElementById('d-' + item.id).addEventListener('input', function(e) {
-    item.drag = +e.target.value;
-    document.getElementById('dv-' + item.id).textContent = item.drag;
+    item.load = +e.target.value;
+    document.getElementById('dv-' + item.id).textContent = item.load;
     update();
   });
 });
 
 function update() {
   items.forEach(function(it) {
-    document.getElementById('s-' + it.id).textContent = it.hours * it.drag;
+    document.getElementById('s-' + it.id).textContent = it.hours * it.load;
   });
   var sorted = items.slice().sort(function(a, b) {
-    return (b.hours * b.drag) - (a.hours * a.drag);
+    return (b.hours * b.load) - (a.hours * a.load);
   });
   ranksEl.innerHTML = sorted.map(function(it, i) {
-    var sc = it.hours * it.drag;
+    var sc = it.hours * it.load;
     var pct = Math.round((sc / 25) * 100);
     return '<div class="rank-bar-wrap">' +
       '<span class="rank-num">' + (i + 1) + '.</span>' +
