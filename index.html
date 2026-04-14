@@ -11,7 +11,46 @@
   .gedrt .done { color: #66C61C; font-weight: 700; }
   .gedrt .active { color: #222; font-weight: 700; }
 
-  .grid-wrap { position: relative; max-width: 480px; margin: 0 auto 28px; }
+  .layout { display: flex; gap: 28px; align-items: flex-start; }
+  .sliders-col { flex: 0 0 280px; }
+  .grid-col { flex: 1; min-width: 0; }
+
+  .row {
+    margin-bottom: 14px; padding: 12px 14px;
+    background: #F7F7F7; border: 1px solid #E5E5E5; border-radius: 10px;
+  }
+  .row-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .icon {
+    width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 600; font-size: 13px; flex-shrink: 0;
+    background: #EAFBE4; color: #3D7A1C;
+  }
+  .name { font-size: 14px; font-weight: 600; }
+  .slider-group { margin-bottom: 8px; }
+  .slider-label { font-size: 11px; color: #888; margin-bottom: 2px; }
+  .slider-row { display: flex; align-items: center; gap: 8px; }
+  .slider-row input[type=range] {
+    -webkit-appearance: none; appearance: none;
+    flex: 1; height: 5px; border-radius: 3px;
+    background: #E5E5E5; outline: none; cursor: pointer;
+  }
+  .slider-row input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: #66C61C; border: 2px solid #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15); cursor: pointer;
+  }
+  .slider-row input[type=range]::-moz-range-thumb {
+    width: 18px; height: 18px; border-radius: 50%;
+    background: #66C61C; border: 2px solid #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15); cursor: pointer;
+  }
+  .slider-val { font-size: 12px; font-weight: 600; min-width: 14px; text-align: center; }
+  .axis-labels { display: flex; justify-content: space-between; margin-top: 1px; }
+  .axis-labels span { font-size: 9px; color: #bbb; }
+
+  .grid-outer { position: relative; padding-left: 48px; padding-bottom: 36px; }
   .grid-box {
     position: relative; width: 100%; padding-bottom: 100%;
     border: 2px solid #222; border-radius: 4px; overflow: hidden;
@@ -19,113 +58,48 @@
   .grid-inner { position: absolute; inset: 0; }
   .grid-q {
     position: absolute; width: 50%; height: 50%;
-    display: flex; align-items: flex-start; justify-content: flex-start;
-    padding: 12px; font-size: 11px; color: #999;
+    padding: 10px; font-size: 11px;
   }
   .grid-q.tl { top: 0; left: 0; background: #F7F7F7; }
   .grid-q.tr { top: 0; left: 50%; background: #EAFBE4; }
   .grid-q.bl { top: 50%; left: 0; background: #FDFDFD; }
   .grid-q.br { top: 50%; left: 50%; background: #F7F7F7; }
-  .grid-q .q-label { font-weight: 600; font-size: 12px; }
+  .q-label { font-weight: 600; font-size: 11px; }
   .grid-q.tr .q-label { color: #3D7A1C; }
-  .grid-q.tl .q-label, .grid-q.br .q-label { color: #888; }
-  .grid-q.bl .q-label { color: #bbb; }
+  .grid-q.tl .q-label, .grid-q.br .q-label { color: #999; }
+  .grid-q.bl .q-label { color: #ccc; }
   .grid-line-h { position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: #ddd; }
   .grid-line-v { position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: #ddd; }
   .grid-dot {
-    position: absolute; width: 40px; height: 40px; border-radius: 50%;
-    background: #66C61C; color: #fff; font-weight: 700; font-size: 14px;
+    position: absolute; width: 38px; height: 38px; border-radius: 50%;
+    background: #66C61C; color: #fff; font-weight: 700; font-size: 13px;
     display: flex; align-items: center; justify-content: center;
     transform: translate(-50%, -50%);
     transition: left 0.35s ease, top 0.35s ease;
     box-shadow: 0 2px 6px rgba(0,0,0,0.15);
     z-index: 2;
   }
-  .grid-axis-label {
-    font-size: 11px; color: #888; text-align: center;
+  .grid-axis-x {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 6px; padding-left: 0;
   }
-  .grid-axis-x { display: flex; justify-content: space-between; margin-top: 6px; }
-  .grid-axis-x .center { flex: 1; text-align: center; font-weight: 600; color: #222; font-size: 12px; }
+  .grid-axis-x .label { font-size: 10px; color: #aaa; }
+  .grid-axis-x .center { font-weight: 600; color: #222; font-size: 12px; }
   .grid-axis-y {
-    position: absolute; left: -54px; top: 0; bottom: 0;
+    position: absolute; left: 0; top: 0; bottom: 36px; width: 44px;
     display: flex; flex-direction: column; justify-content: space-between;
-    align-items: center; padding: 2px 0;
+    align-items: center; padding: 4px 0;
   }
+  .grid-axis-y .label { font-size: 10px; color: #aaa; }
   .grid-axis-y .center {
     font-weight: 600; color: #222; font-size: 12px;
     writing-mode: vertical-lr; transform: rotate(180deg);
   }
 
-  .row {
-    display: flex; align-items: center; gap: 12px;
-    margin-bottom: 16px; padding: 14px 16px;
-    background: #F7F7F7; border: 1px solid #E5E5E5; border-radius: 10px;
-  }
-  .icon {
-    width: 36px; height: 36px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 600; font-size: 14px; flex-shrink: 0;
-    background: #EAFBE4; color: #3D7A1C;
-  }
-  .name { font-size: 14px; font-weight: 600; min-width: 76px; }
-  .sliders { flex: 1; display: flex; gap: 16px; }
-  .slider-group { flex: 1; }
-  .slider-label { font-size: 11px; color: #888; margin-bottom: 2px; }
-  .slider-row { display: flex; align-items: center; gap: 8px; }
-  .slider-row input[type=range] {
-    -webkit-appearance: none; appearance: none;
-    flex: 1; height: 6px; border-radius: 3px;
-    background: #E5E5E5; outline: none; cursor: pointer;
-  }
-  .slider-row input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none; appearance: none;
-    width: 20px; height: 20px; border-radius: 50%;
-    background: #66C61C; border: 2px solid #fff;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.15); cursor: pointer;
-  }
-  .slider-row input[type=range]::-moz-range-thumb {
-    width: 20px; height: 20px; border-radius: 50%;
-    background: #66C61C; border: 2px solid #fff;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.15); cursor: pointer;
-  }
-  .slider-val { font-size: 13px; font-weight: 600; min-width: 14px; text-align: center; }
-  .axis-labels { display: flex; justify-content: space-between; margin-top: 2px; }
-  .axis-labels span { font-size: 10px; color: #aaa; }
-  .score {
-    font-size: 20px; font-weight: 700; min-width: 36px; text-align: center;
-    color: #66C61C;
-  }
-  .rank-section {
-    margin-top: 24px; padding: 20px;
-    border: 1px solid #E5E5E5; border-radius: 10px;
-  }
-  .rank-title { font-size: 15px; font-weight: 600; margin-bottom: 14px; }
-  .rank-bar-wrap {
-    display: flex; align-items: center; gap: 10px;
-    margin-bottom: 10px;
-  }
-  .rank-num { font-size: 13px; color: #aaa; min-width: 20px; font-weight: 600; }
-  .rank-name { font-size: 13px; font-weight: 600; min-width: 76px; }
-  .rank-bar-bg {
-    flex: 1; height: 22px;
-    background: #F2F2F2; border-radius: 11px;
-    overflow: hidden;
-  }
-  .rank-bar {
-    height: 100%; border-radius: 11px;
-    transition: width 0.3s ease;
-    background: #85E13A;
-  }
-  .rank-score { font-size: 14px; font-weight: 700; min-width: 28px; text-align: right; }
-  .hint {
-    margin-top: 16px; font-size: 12px; color: #999;
-    line-height: 1.5; text-align: center;
-  }
-  @media (max-width: 560px) {
-    .sliders { flex-direction: column; gap: 8px; }
-    .row { flex-wrap: wrap; }
-    .name { min-width: 60px; }
-    .grid-wrap { margin-left: 54px; margin-right: 0; }
+  @media (max-width: 640px) {
+    .layout { flex-direction: column; }
+    .sliders-col { flex: none; width: 100%; }
+    .grid-outer { margin-top: 12px; }
   }
 </style>
 </head>
@@ -134,41 +108,37 @@
 <div class="title">Which assistant should you build first?</div>
 <p class="subtitle">All four pass <span class="gedrt"><span class="done">G</span> <span class="done">E</span> <span class="done">D</span></span> — now score them on <span class="gedrt"><span class="active">R</span></span> and <span class="gedrt"><span class="active">T</span></span>.</p>
 
-<div class="grid-wrap">
-  <div class="grid-axis-y">
-    <span class="grid-axis-label">Toil</span>
-    <span class="grid-axis-y center">T — Toil</span>
-    <span class="grid-axis-label">Joyful</span>
-  </div>
-  <div class="grid-box">
-    <div class="grid-inner">
-      <div class="grid-q tl"><span class="q-label">Worth the relief</span></div>
-      <div class="grid-q tr"><span class="q-label">Start here</span></div>
-      <div class="grid-q bl"><span class="q-label">Lower priority</span></div>
-      <div class="grid-q br"><span class="q-label">Volume play</span></div>
-      <div class="grid-line-h"></div>
-      <div class="grid-line-v"></div>
-      <div class="grid-dot" id="dot-email">E</div>
-      <div class="grid-dot" id="dot-writing">W</div>
-      <div class="grid-dot" id="dot-data">D</div>
-      <div class="grid-dot" id="dot-meeting">M</div>
+<div class="layout">
+  <div class="sliders-col" id="rows"></div>
+  <div class="grid-col">
+    <div class="grid-outer">
+      <div class="grid-axis-y">
+        <span class="label">Toil</span>
+        <span class="center">T — Toil</span>
+        <span class="label">Joyful</span>
+      </div>
+      <div class="grid-box">
+        <div class="grid-inner">
+          <div class="grid-q tl"><span class="q-label">Worth the relief</span></div>
+          <div class="grid-q tr"><span class="q-label">Start here</span></div>
+          <div class="grid-q bl"><span class="q-label">Lower priority</span></div>
+          <div class="grid-q br"><span class="q-label">Volume play</span></div>
+          <div class="grid-line-h"></div>
+          <div class="grid-line-v"></div>
+          <div class="grid-dot" id="dot-email">E</div>
+          <div class="grid-dot" id="dot-writing">W</div>
+          <div class="grid-dot" id="dot-data">D</div>
+          <div class="grid-dot" id="dot-meeting">M</div>
+        </div>
+      </div>
+      <div class="grid-axis-x">
+        <span class="label">Not time-consuming</span>
+        <span class="center">R — Recurring</span>
+        <span class="label">Highly</span>
+      </div>
     </div>
   </div>
-  <div class="grid-axis-x">
-    <span class="grid-axis-label">Not time-consuming</span>
-    <span class="center">R — Recurring</span>
-    <span class="grid-axis-label">Highly</span>
-  </div>
 </div>
-
-<div id="rows"></div>
-
-<div class="rank-section">
-  <div class="rank-title">Your priority order</div>
-  <div id="ranks"></div>
-</div>
-
-<p class="hint">Score = R × T (max 25). Start with the highest.</p>
 
 <script>
 var items = [
@@ -179,33 +149,31 @@ var items = [
 ];
 
 var rowsEl = document.getElementById('rows');
-var ranksEl = document.getElementById('ranks');
 
 items.forEach(function(item) {
   var row = document.createElement('div');
   row.className = 'row';
   row.innerHTML =
-    '<div class="icon">' + item.icon + '</div>' +
-    '<div class="name">' + item.name + '</div>' +
-    '<div class="sliders">' +
-      '<div class="slider-group">' +
-        '<div class="slider-label">R — Recurring</div>' +
-        '<div class="slider-row">' +
-          '<input type="range" min="1" max="5" step="1" value="' + item.r + '" id="r-' + item.id + '">' +
-          '<span class="slider-val" id="rv-' + item.id + '">' + item.r + '</span>' +
-        '</div>' +
-        '<div class="axis-labels"><span>Not time-consuming</span><span>Highly</span></div>' +
-      '</div>' +
-      '<div class="slider-group">' +
-        '<div class="slider-label">T — Toil</div>' +
-        '<div class="slider-row">' +
-          '<input type="range" min="1" max="5" step="1" value="' + item.t + '" id="t-' + item.id + '">' +
-          '<span class="slider-val" id="tv-' + item.id + '">' + item.t + '</span>' +
-        '</div>' +
-        '<div class="axis-labels"><span>Joyful work</span><span>Toil</span></div>' +
-      '</div>' +
+    '<div class="row-header">' +
+      '<div class="icon">' + item.icon + '</div>' +
+      '<div class="name">' + item.name + '</div>' +
     '</div>' +
-    '<div class="score" id="s-' + item.id + '">' + (item.r * item.t) + '</div>';
+    '<div class="slider-group">' +
+      '<div class="slider-label">R — Recurring</div>' +
+      '<div class="slider-row">' +
+        '<input type="range" min="1" max="5" step="1" value="' + item.r + '" id="r-' + item.id + '">' +
+        '<span class="slider-val" id="rv-' + item.id + '">' + item.r + '</span>' +
+      '</div>' +
+      '<div class="axis-labels"><span>Not time-consuming</span><span>Highly</span></div>' +
+    '</div>' +
+    '<div class="slider-group">' +
+      '<div class="slider-label">T — Toil</div>' +
+      '<div class="slider-row">' +
+        '<input type="range" min="1" max="5" step="1" value="' + item.t + '" id="t-' + item.id + '">' +
+        '<span class="slider-val" id="tv-' + item.id + '">' + item.t + '</span>' +
+      '</div>' +
+      '<div class="axis-labels"><span>Joyful work</span><span>Toil</span></div>' +
+    '</div>';
   rowsEl.appendChild(row);
 
   document.getElementById('r-' + item.id).addEventListener('input', function(e) {
@@ -222,26 +190,12 @@ items.forEach(function(item) {
 
 function update() {
   items.forEach(function(it) {
-    document.getElementById('s-' + it.id).textContent = it.r * it.t;
     var dot = document.getElementById('dot-' + it.id);
     var xPct = ((it.r - 1) / 4) * 80 + 10;
     var yPct = 100 - (((it.t - 1) / 4) * 80 + 10);
     dot.style.left = xPct + '%';
     dot.style.top = yPct + '%';
   });
-  var sorted = items.slice().sort(function(a, b) {
-    return (b.r * b.t) - (a.r * a.t);
-  });
-  ranksEl.innerHTML = sorted.map(function(it, i) {
-    var sc = it.r * it.t;
-    var pct = Math.round((sc / 25) * 100);
-    return '<div class="rank-bar-wrap">' +
-      '<span class="rank-num">' + (i + 1) + '.</span>' +
-      '<span class="rank-name">' + it.name + '</span>' +
-      '<div class="rank-bar-bg"><div class="rank-bar" style="width:' + pct + '%"></div></div>' +
-      '<span class="rank-score">' + sc + '</span>' +
-    '</div>';
-  }).join('');
 }
 
 update();
