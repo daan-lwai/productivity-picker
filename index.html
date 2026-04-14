@@ -13,10 +13,10 @@
 
   .layout { display: flex; gap: 24px; align-items: start; }
   .sliders-col {
-    flex: 1; min-width: 0;
+    flex: 0 0 46%; min-width: 0;
     display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
   }
-  .grid-col { flex: 0 0 340px; }
+  .grid-col { flex: 1; min-width: 0; }
 
   .row {
     padding: 12px 14px;
@@ -102,7 +102,7 @@
   @media (max-width: 700px) {
     .layout { flex-direction: column; }
     .sliders-col { grid-template-columns: 1fr 1fr; }
-    .grid-col { flex: none; width: 100%; max-width: 340px; margin: 0 auto; }
+    .grid-col { flex: none; width: 100%; max-width: 400px; margin: 0 auto; }
   }
   @media (max-width: 400px) {
     .sliders-col { grid-template-columns: 1fr; }
